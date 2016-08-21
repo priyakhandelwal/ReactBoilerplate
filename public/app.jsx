@@ -1,9 +1,12 @@
 var GreeterMessage = React.createClass({
+
   render: function () {
+    var name = this.props.name,
+      msg = this.props.msg;
     return (
       <div>
-        <h1> Heading placeholder</h1>
-        <p>paragraph placeholder</p>
+        <h1> Hello {name}</h1>
+        <p> {msg} </p>
       </div>
     );
   }
@@ -12,8 +15,15 @@ var GreeterMessage = React.createClass({
 var GreeterForm = React.createClass({
   onButtonClick: function (e) {
     e.preventDefault();
+
+     var name = this.refs.name.value;
+     if (name.length > 0) {
+       this.refs.name.value = '';
+       this.props.onNewName(name);
+     }
   },
   render: function () {
+    var onNewName = this.props.onNewName;
     return (
       <div>
         <form onSubmit={this.onButtonClick}>
@@ -37,24 +47,19 @@ var Greeter = React.createClass({
       name: this.props.name
     }
   },
-  onButtonClick: function (e) {
-    e.preventDefault();
-
-    var name = this.refs.name.value;
-    if (typeof name === "string" && name.length > 0) {
-      this.setState({
-        name: name
-      })
-    }
+  handleName: function (name) {
+    this.setState({
+      'name': name
+    });
   },
   render: function () {
-    var name = this.props.name,
+    var name = this.state.name,
       msg = this.props.msg;
 
     return (
       <div>
-        <GreeterMessage/>
-        <GreeterForm/>
+        <GreeterMessage name={name} msg={msg}/>
+        <GreeterForm onNewName={this.handleName}/>
       </div>
     );
   }

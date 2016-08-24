@@ -27495,14 +27495,17 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      location: 'Chennai',
-	      temp: 31
+	      temp: 29
 	    };
 	  },
 	  getWeather: function getWeather(location) {
 	    self = this;
-
+	    this.setState({
+	      isLoading: true
+	    });
 	    OpenWeatherMap.getWeather(location).then(function (temp) {
 	      self.setState({
+	        isLoading: false,
 	        location: location,
 	        temp: temp
 	      });
@@ -27512,9 +27515,21 @@
 	  },
 	  render: function render() {
 	    var _state = this.state;
+	    var isLoading = _state.isLoading;
 	    var location = _state.location;
 	    var temp = _state.temp;
 
+	    function renderMessage() {
+	      if (isLoading) {
+	        return React.createElement(
+	          'h3',
+	          null,
+	          'Fetching temperature ... '
+	        );
+	      } else if (location && temp) {
+	        return React.createElement(WeatherMessage, { temp: temp, location: location });
+	      }
+	    }
 	    return React.createElement(
 	      'div',
 	      null,
@@ -27524,7 +27539,7 @@
 	        'Weather component'
 	      ),
 	      React.createElement(WeatherForm, { handleSearch: this.getWeather }),
-	      React.createElement(WeatherMessage, { temp: temp, location: location })
+	      renderMessage()
 	    );
 	  }
 	});

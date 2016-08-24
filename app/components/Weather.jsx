@@ -7,28 +7,41 @@ var Weather = React.createClass({
   getInitialState: function () {
     return {
       location: 'Chennai',
-      temp: 31
+      temp: 29
     }
   },
   getWeather: function (location) {
     self = this;
-
+    this.setState({
+      isLoading: true
+    });
     OpenWeatherMap.getWeather(location).then(function(temp) {
       self.setState({
+        isLoading: false,
         location: location,
         temp: temp
       })
     }, function (error) {
+      self.setState({
+        isLoading: false
+      });
       alert(error);
     });
   },
   render: function() {
-    var {location, temp} = this.state;
+    var {isLoading, location, temp} = this.state;
+    function renderMessage () {
+      if (isLoading) {
+        return <h3>Fetching temperature ... </h3>;
+      } else if (location && temp) {
+        return <WeatherMessage temp={temp} location={location}/>;
+      }
+    }
     return (
       <div>
           <h1>Weather component</h1>
           <WeatherForm handleSearch={this.getWeather}/>
-          <WeatherMessage temp={temp} location={location}/>
+          {renderMessage()}
       </div>
     );
   }

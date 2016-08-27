@@ -8,10 +8,10 @@ var About = (props) => {
       <p>Here are the few tools I have used</p>
       <ul>
         <li>
-          <a href="https://facebook.github.io/react">React</a>This was the javascript framework used.
+          <a href="https://facebook.github.io/react">React - </a>This was the javascript framework used.
         </li>
         <li>
-          <a href="http://openweathermap.org">Open weather Map</a>has been used to get the weather data.
+          <a href="http://openweathermap.org">Open weather Map - </a>has been used to get the weather data.
         </li>
       </ul>
     </div>
